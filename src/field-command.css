@@ -1,0 +1,303 @@
+/*
+  MASCAL / FIELD COMMAND — original rescue-operation HUD.
+  A deliberately utilitarian, editorial instrument console, not a card-dashboard skin.
+  CSS-only visuals, no component library, no graphics assets, no gameplay changes.
+*/
+:root {
+  --ops-void:#0b1419;
+  --ops-slate:#14252b;
+  --ops-ink:#101d24;
+  --ops-rule:rgba(167,192,192,.23);
+  --ops-text:#f0eadd;
+  --ops-muted:#9db1b2;
+  --ops-copper:#f18d5d;
+  --ops-signal:#a5e3d1;
+  --ops-alert:#ff7165;
+  --ops-number:'Barlow Condensed','Bahnschrift SemiCondensed','Arial Narrow',sans-serif;
+  --ops-mono:'IBM Plex Mono','Cascadia Code',Consolas,monospace;
+  --ops-sans:'IBM Plex Sans','Segoe UI',Arial,sans-serif;
+}
+html,body {background:var(--ops-void);color:var(--ops-text);font-family:var(--ops-sans);}
+body::after {
+  content:"";position:fixed;inset:0;pointer-events:none;z-index:2;
+  background:linear-gradient(90deg,rgba(4,12,17,.15),transparent 20%,transparent 83%,rgba(4,12,17,.1));
+}
+button,kbd {font-family:var(--ops-sans);}
+button:focus-visible {outline:2px solid var(--ops-signal)!important;outline-offset:3px;}
+kbd {display:inline-flex;align-items:center;justify-content:center;min-width:21px;height:23px;padding:2px 5px;
+  border:1px solid #718987;border-radius:2px;background:#23383b;box-shadow:inset 0 -2px rgba(0,0,0,.22);
+  color:var(--ops-text);font:600 11px var(--ops-mono);}
+
+/* -------------------- TOP COMMAND RAIL -------------------- */
+.mission-head {left:22px;top:20px;width:min(520px,calc(100vw - 290px));height:75px;
+  padding:0 18px 0 0;gap:13px;border-radius:0;border:1px solid var(--ops-rule);
+  border-left:4px solid var(--ops-copper);background:rgba(9,20,25,.93);
+  box-shadow:0 8px 22px rgba(0,0,0,.18);clip-path:polygon(0 0,calc(100% - 10px) 0,100% 10px,100% 100%,0 100%);
+}
+.mission-head .mission-mark {height:73px;width:58px;flex:0 0 58px;border-radius:0;
+  background:var(--ops-copper);box-shadow:none;color:#102027;
+  font:900 48px/1 var(--ops-number);letter-spacing:-.08em;}
+.mission-head .brand-lockup {min-width:0;}
+.mission-head b {font:900 29px/.86 var(--ops-number);letter-spacing:.035em;color:#f8f2e6;}
+.mission-head small {display:block;margin-top:8px;font:500 9px/1.25 var(--ops-mono);letter-spacing:.07em;color:#c0c9c5;white-space:normal;}
+.mission-brand-divider {flex:1;min-width:8px;height:1px;border-top:1px solid var(--ops-rule);}
+.mission-head .status-dot {display:flex;align-items:center;gap:7px;margin-left:0;padding:7px 0;background:none;
+  color:var(--ops-signal);box-shadow:none;border-radius:0;font:600 9px var(--ops-mono);letter-spacing:.03em;}
+.mission-head .status-dot i {display:inline-block;width:6px;height:6px;background:var(--ops-signal);border-radius:50%;box-shadow:0 0 8px rgba(165,227,209,.65);}
+.score {right:22px;top:20px;width:186px;min-width:186px;height:75px;border-radius:0;
+  padding:9px 15px;background:rgba(9,20,25,.94);border:1px solid var(--ops-rule);
+  border-right:4px solid var(--ops-copper);box-shadow:0 8px 22px #0004;
+  display:flex;flex-direction:column;align-items:flex-end;justify-content:space-between;gap:0;}
+.score .score-kicker {color:var(--ops-muted);font:600 9px var(--ops-mono);letter-spacing:.06em;}
+.score .score-line {display:flex;align-items:baseline;gap:7px;margin-top:-5px;}
+.score strong {font:800 48px/.85 var(--ops-number);letter-spacing:.02em;color:var(--ops-text);padding:0;text-shadow:none;font-variant-numeric:tabular-nums;}
+.score small {color:var(--ops-copper);font:600 11px var(--ops-mono);}
+.score .score-annotation {font:400 8px var(--ops-mono);color:#879b9f;letter-spacing:.08em;}
+
+/* -------------------- LEFT INCIDENT LEDGER -------------------- */
+.triage-mission-hud {
+  left:22px;top:106px;bottom:130px;max-height:none;min-width:0;width:346px;max-width:346px;
+  padding:0 16px 13px;overflow:auto;scrollbar-width:thin;scrollbar-color:#536d6a transparent;
+  color:var(--ops-text);border-radius:0;border:1px solid var(--ops-rule);border-left:3px solid var(--ops-copper);
+  box-shadow:0 14px 36px rgba(0,0,0,.32);background:linear-gradient(160deg,rgba(11,24,29,.97),rgba(10,21,26,.91));
+}
+.triage-mission-hud.has-critical {border-color:rgba(255,113,101,.65);border-left-color:var(--ops-alert);box-shadow:0 14px 36px #0006;}
+.ops-panel-bar {display:flex;align-items:center;justify-content:space-between;margin:0 -16px 14px;padding:10px 16px;
+  background:rgba(50,75,76,.31);border-bottom:1px solid var(--ops-rule);
+  font:600 10px var(--ops-mono);letter-spacing:.09em;color:var(--ops-copper);}
+.ops-live-pulse {font:600 9px var(--ops-mono);color:var(--ops-signal);letter-spacing:0;}
+.ops-live-pulse::before {content:'●';font-size:8px;margin-right:6px;}
+.mission-time-caption {font:600 11px/1.3 var(--ops-mono);letter-spacing:.07em;color:var(--ops-text);}
+.round-description {margin:6px 0 15px;font:500 11px/1.35 var(--ops-sans);letter-spacing:0;text-transform:none;color:#a6b8b6;}
+.ops-time-header {display:flex;justify-content:space-between;gap:10px;color:#829b9f;font:600 9px var(--ops-mono);letter-spacing:.045em;}
+.mission-time {margin-top:0;font:800 74px/.92 var(--ops-number);letter-spacing:.018em;color:var(--ops-text);font-variant-numeric:tabular-nums;}
+.ops-timer-track {width:100%;height:4px;background:#33484b;margin:9px 0 9px;overflow:hidden;}
+.ops-timer-track div {height:100%;width:100%;background:var(--ops-copper);transition:width .3s linear;}
+.ops-timer-critical .mission-time {color:#ffb29a;}
+.ops-timer-critical .ops-timer-track div {background:var(--ops-alert);}
+.mission-stat {display:flex;gap:3px;align-items:center;flex-wrap:wrap;margin:0 0 11px;color:#b3c2bd;font:500 11px/1.5 var(--ops-sans);}
+.mission-stat b {color:var(--ops-text);font-family:var(--ops-mono);}
+.ops-divider-heading {display:flex;align-items:center;gap:9px;margin:15px 0 7px;padding-top:8px;
+  border-top:1px solid var(--ops-rule);font:700 10px var(--ops-mono);letter-spacing:.025em;color:var(--ops-text);}
+.ops-divider-heading span {color:var(--ops-copper);font:700 11px var(--ops-mono);}
+.team-indicators {gap:4px;}
+.team-indicators span {display:block;background:rgba(35,73,65,.48);border-left:3px solid #79c5a8;border-radius:0;
+  padding:7px 9px;color:#c8dfd6;font:600 10px/1.5 var(--ops-mono);letter-spacing:0;}
+.team-indicators span.busy {background:rgba(98,65,35,.46);border-left-color:var(--ops-copper);color:#f8cf9f;}
+.dispatch-queue {display:grid;gap:6px;margin:9px 0 0;padding:10px 0 0;border-top:1px solid var(--ops-rule);}
+.dispatch-queue>span {font:700 10px var(--ops-mono);letter-spacing:.035em;color:var(--ops-copper);}
+.dispatch-queue strong {font:600 11px/1.5 var(--ops-mono);color:#e8e2cf;}
+.triage-mission-hud.has-critical .dispatch-queue strong {color:#ffc0a6;}
+.team-process-key {display:flex;flex-wrap:wrap;gap:4px 8px;align-items:center;margin:7px 0 0;padding:0;border:0;
+  font:500 9px var(--ops-mono);color:#8da6a8;}
+.team-process-key span {padding:2px 4px;border:1px solid #3c585d;background:rgba(36,55,60,.4);
+  border-radius:0;color:#c9d6d2;}
+.team-process-key small {width:auto;line-height:1.45;color:#8fa9a8;}
+.domino-status {display:grid;grid-template-columns:95px minmax(0,1fr);gap:10px;margin:0;padding:7px 0;border-top:1px solid rgba(167,192,192,.13);}
+.domino-status span {font:700 9px/1.4 var(--ops-mono);letter-spacing:0;color:#aebfba;}
+.domino-status strong {font:500 11px/1.45 var(--ops-sans);color:#e6e4d6;}
+.triage-mission-hud .support-status {margin-top:0;padding-top:7px;border-color:rgba(167,192,192,.13);}
+.triage-mission-hud .support-status strong {color:#cce3df;}
+.tactical-support-block {margin:12px 0 0;padding:11px 0 0;border-top:1px solid var(--ops-rule);}
+.tactical-support-heading {display:flex;justify-content:space-between;gap:12px;color:var(--ops-copper);font:700 10px/1.4 var(--ops-mono);letter-spacing:.025em;}
+.tactical-support-heading small {text-align:right;color:#839da0;font:500 8px/1.4 var(--ops-mono);letter-spacing:0;}
+.bonus-inventory {padding:7px 10px;margin-top:7px;border:1px solid #52635d;border-radius:0;
+  background:rgba(71,93,83,.22);font:600 11px/1.4 var(--ops-mono);color:#f0e6d4;}
+.bonus-controls,.support-note {margin-top:5px;color:#a4b9b6;font:500 10px/1.45 var(--ops-sans);}
+.support-note {color:#7daea4;}
+
+/* -------------------- RIGHT COMMS LOG -------------------- */
+.triage-radio {right:22px;top:106px;bottom:auto;width:385px;max-width:385px;min-height:0;height:183px;
+  padding:0;display:block;overflow:hidden;border-radius:0;
+  background:rgba(10,23,29,.96);border:1px solid var(--ops-rule);border-top:3px solid var(--ops-copper);
+  box-shadow:0 13px 30px #0005;color:var(--ops-text);font-size:12px;font-weight:400;}
+.signal-feed-head {height:39px;padding:0 13px;display:flex;align-items:center;gap:10px;
+  border-bottom:1px solid var(--ops-rule);background:rgba(41,65,66,.25);}
+.signal-emblem {font:700 14px var(--ops-mono);color:var(--ops-copper);letter-spacing:-.1em;}
+.signal-feed-head b {font:700 11px var(--ops-mono);color:var(--ops-text);letter-spacing:.025em;flex:1;}
+.signal-live {font:700 9px var(--ops-mono);color:var(--ops-signal);border:1px solid #5c9184;padding:4px 6px;}
+.signal-feed-list {display:flex;flex-direction:column;max-height:140px;overflow:hidden;}
+.signal-entry {display:grid;grid-template-columns:44px minmax(0,1fr);gap:10px;align-items:start;
+  padding:9px 13px 8px;border-bottom:1px solid rgba(165,190,184,.11);
+  font:500 11px/1.38 var(--ops-sans);color:#d5ded9;}
+.signal-entry:first-child {background:rgba(50,81,85,.18);}
+.signal-entry time {font:600 10px var(--ops-mono);color:#91aaa7;}
+.signal-entry.signal-warning {color:#ffb5a2;border-left:3px solid var(--ops-alert);padding-left:10px;}
+.signal-entry.signal-success {color:#b8e8d7;border-left:3px solid var(--ops-signal);padding-left:10px;}
+.triage-radio[data-type="warning"],.triage-radio[data-type="success"] {border-left:1px solid var(--ops-rule);color:var(--ops-text);}
+
+/* -------------------- RIGHT STT TELEMETRY -------------------- */
+.stt-monitor-panel {right:22px;top:301px;width:385px;max-width:385px;bottom:auto;
+  padding:0 13px 13px;background:rgba(10,22,27,.96);border:1px solid var(--ops-rule);
+  border-top:3px solid #81c6be;border-radius:0;box-shadow:0 14px 30px #0005;color:var(--ops-text);}
+.stt-panel-head {display:flex;flex-direction:column;gap:2px;padding:14px 0 11px;margin:0;border-bottom:1px solid var(--ops-rule);letter-spacing:0;}
+.stt-panel-head .telemetry-id {font:600 10px var(--ops-mono);color:#7bc6bf;letter-spacing:.07em;}
+.stt-panel-head strong {font:800 27px/.95 var(--ops-number);color:#f1f0e7;letter-spacing:.03em;}
+.stt-panel-head small {color:#8caaa8;font:500 9px var(--ops-mono);letter-spacing:.06em;}
+.stt-panel-subline {display:flex;justify-content:space-between;margin:10px 0 12px;color:#b7d3ca;font:600 10px var(--ops-mono);}
+.stt-panel-subline span:last-child {color:var(--ops-copper);}
+.stt-live-readings.is-panel {margin:0;gap:7px;display:flex;flex-direction:column;}
+.stt-slot {display:grid;grid-template-columns:59px 1fr;gap:11px;align-items:center;padding:9px 10px;
+  border:1px solid #36585b;border-left:3px solid #79c6bb;border-radius:0;background:rgba(25,47,50,.55);box-shadow:none;}
+.stt-slot.empty {border:1px dashed #344f52;border-left:3px solid #425b5c;background:rgba(17,32,37,.45);opacity:1;}
+.stt-slot.urgent {border:1px solid #a7524e;border-left:3px solid var(--ops-alert);
+  background:rgba(112,43,40,.29);box-shadow:none;}
+.stt-slot-index {min-width:0;padding:0;border-radius:0;background:transparent;color:#7acbc4;
+  font:700 12px var(--ops-mono);letter-spacing:0;text-align:left;}
+.stt-slot.urgent .stt-slot-index {background:transparent;color:var(--ops-alert);}
+.stt-slot-body {min-width:0;gap:3px;}
+.stt-slot-body strong {font:700 12px var(--ops-mono);color:#f6f1e3;}
+.stt-slot-body small {font:500 10px/1.4 var(--ops-sans);color:#9db9b5;}
+.stt-slot.urgent .stt-slot-body small {color:#ffc5bc;}
+.stt-slot-values {display:flex;gap:9px;color:#adbec0;font:500 10px var(--ops-mono);}
+.stt-slot-values span {background:none;border:0;border-radius:0;padding:0;}
+.stt-slot-values span+span {padding-left:9px;border-left:1px solid #466369;}
+.stt-slot-values b {font:700 21px/1 var(--ops-number);color:#f4e6c8;}
+.stt-overflow {margin:7px 0 0;background:transparent;border:1px solid #49666b;border-radius:0;color:#b8cac8;font:500 10px var(--ops-mono);}
+
+/* -------------------- KEYMAP & INTERACTION -------------------- */
+.controls-help {left:22px;bottom:18px;width:346px;min-width:0;max-width:346px;height:99px;
+  border:1px solid var(--ops-rule);border-left:3px solid #8caead;border-radius:0;background:rgba(10,22,27,.94);
+  padding:8px 12px;box-shadow:0 12px 23px #0005;}
+.controls-help .controls-title {display:flex;margin-top:0;justify-content:space-between;padding-bottom:6px;margin-bottom:7px;border-bottom:1px solid var(--ops-rule);}
+.controls-title strong {font:700 10px var(--ops-mono);color:#d3e2dc;}
+.controls-title span {font:500 8px var(--ops-mono);color:#799e9c;}
+.controls-help .control-grid {margin:0;display:grid;grid-template-columns:repeat(3,1fr);gap:5px 7px;}
+.controls-help .control-grid>span {display:flex;align-items:center;gap:6px;min-width:0;margin:0;
+  font:500 9px var(--ops-sans);color:#b5c5c1;white-space:nowrap;}
+.controls-help .control-grid kbd {min-width:22px;height:19px;padding:2px 3px;font-size:9px;border-color:#526962;background:#24393c;}
+.triage-action-prompt {bottom:23px;left:50%;max-width:min(490px,calc(100vw - 780px));
+  padding:11px 14px 12px;border:1px solid var(--ops-rule);border-left:3px solid var(--ops-copper);
+  border-radius:0;background:rgba(11,23,27,.94);box-shadow:0 14px 26px #0005;
+  color:#eee8da;font:600 12px/1.5 var(--ops-sans);text-align:left;}
+.triage-action-prompt::before {content:'POLECENIE  /';display:block;margin-bottom:3px;color:var(--ops-copper);
+  font:700 9px var(--ops-mono);letter-spacing:.035em;}
+
+/* -------------------- TRIAGE CHOOSER / INCIDENT DECISIONS -------------------- */
+.triage-patient-modal,.triage-end-modal {background:rgba(5,14,19,.84);backdrop-filter:blur(4px);}
+.triage-modal-content,.triage-end-panel {width:min(620px,96vw);max-height:92vh;overflow:auto;border-radius:0;
+  background:#101f26;border:1px solid #6b8581;border-top:4px solid var(--ops-copper);
+  box-shadow:0 30px 120px rgba(0,0,0,.7);padding:26px 30px;color:var(--ops-text);}
+.triage-modal-content .mission-time-caption,.triage-end-panel .mission-time-caption {color:var(--ops-copper);font:700 10px var(--ops-mono);}
+.triage-modal-content h2,.triage-end-panel h1 {font:800 48px/1 var(--ops-number);letter-spacing:.025em;
+  margin:11px 0 13px;color:var(--ops-text);text-transform:uppercase;}
+.triage-modal-content p,.triage-end-panel p {color:#bec9c3;font:400 13px/1.6 var(--ops-sans);}
+.triage-modal-content ul {gap:0;border-top:1px solid var(--ops-rule);}
+.triage-modal-content li {background:transparent;border-bottom:1px solid var(--ops-rule);border-radius:0;
+  padding:10px 4px;color:#e1e6dc;font:500 13px var(--ops-sans);}
+.triage-modal-content li:before {content:'+';font-family:var(--ops-mono);color:var(--ops-copper);margin-right:12px;}
+.triage-choices {gap:7px;}
+.triage-choices button {border-radius:0;background:#203339;border:1px solid #617777;border-left:3px solid #647c79;
+  color:#eff2ea;min-height:52px;font:700 13px var(--ops-sans);transition:background .15s;}
+.triage-choices button:hover:not(:disabled) {background:#2d4548;filter:none;}
+.triage-choices button[data-tag="green"] {border-left-color:#78d2a6;}
+.triage-choices button[data-tag="yellow"] {border-left-color:#f3d178;}
+.triage-choices button[data-tag="red"] {border-left-color:#ff8574;}
+.triage-choices button[data-tag="black"] {border-left-color:#a9a9af;}
+.triage-choices kbd {height:27px;width:27px;border:1px solid #62726c;border-radius:0;background:#31434a;}
+.patient-live-vitals {border-radius:0;background:#172d33;border-color:#49736d;}
+.stt-vitals-title {font:700 11px var(--ops-mono);color:var(--ops-signal);}
+.stt-values strong {font:800 27px var(--ops-number);color:#f6e9cf;}
+.patient-item-actions button {border-radius:0;background:#253d41;border:1px solid #5c8580;color:#c9e8e0;
+  font:700 11px var(--ops-mono);}
+.patient-item-actions button:not(:disabled):hover {background:#325250;}
+.triage-close,.triage-disclaimer {color:#91a5a4;font:500 10px var(--ops-mono);}
+
+.domino-event-modal {background:rgba(5,13,18,.85);backdrop-filter:blur(4px);}
+.domino-event-modal .domino-event-card {max-width:680px;width:min(680px,95vw);border-radius:0;
+  padding:30px 33px;border:1px solid #637d7a;border-top:5px solid var(--ops-alert);
+  background:#101e25;box-shadow:0 28px 100px #000c;}
+.domino-event-modal .domino-eyebrow {font:700 11px var(--ops-mono);color:var(--ops-alert);letter-spacing:.06em;}
+.domino-event-modal .domino-event-card h2 {font:900 52px/.95 var(--ops-number);color:#ffb299;letter-spacing:.01em;margin:16px 0;}
+.domino-event-modal .domino-lede {font:400 14px/1.7 var(--ops-sans);color:#d1d9d2;}
+.domino-event-modal .domino-options {display:grid;gap:7px;margin-top:20px;}
+.domino-event-modal .domino-options button {border-radius:0;background:#22363c;border:1px solid #536f6e;
+  text-align:left;padding:18px;transition:background .12s,border-color .12s;}
+.domino-event-modal .domino-options button:hover {background:#31504e;border-color:var(--ops-signal);}
+.domino-event-modal .domino-key {flex:0 0 40px;min-width:40px;height:40px;border-radius:0;background:var(--ops-copper);
+  color:#17232a;font:900 24px/1 var(--ops-number);}
+.domino-event-modal .domino-options strong {font:700 16px var(--ops-number);letter-spacing:.03em;color:#f1e8d7;}
+.domino-event-modal .domino-options small {font:400 12px/1.55 var(--ops-sans);color:#b2c5bd;}
+.domino-event-modal .domino-footnote {font:500 10px/1.5 var(--ops-mono);color:#8fa8a5;}
+
+/* -------------------- AFTER-ACTION REPORT -------------------- */
+.triage-end-panel {width:min(820px,95vw);padding:30px 34px;}
+.triage-end-panel h1 {font-size:62px;margin:10px 0 13px;}
+.triage-end-panel h3 {color:var(--ops-copper);font:700 11px var(--ops-mono);letter-spacing:.08em;
+  border-bottom:1px solid var(--ops-rule);padding:0 0 8px;margin:20px 0 10px;}
+.triage-end-panel #end-stats {font:500 12px/1.6 var(--ops-mono);color:#c6d1c9;}
+.mission-grade {background:#1c3137;border:1px solid #62776c;border-left:4px solid var(--ops-copper);
+  border-radius:0;padding:14px 18px;}
+.mission-grade span {font:600 10px var(--ops-mono);color:#a8c3bd;letter-spacing:.05em;}
+.mission-grade strong {font:900 64px/.9 var(--ops-number);color:var(--ops-copper);}
+.mission-grade b {font:700 19px var(--ops-mono);color:#e8e9d9;}
+.mission-metrics {gap:7px;}
+.mission-metrics>div {border-radius:0;padding:13px;background:#1a3036;border:1px solid #3c5c5e;}
+.mission-metrics small {font:600 10px var(--ops-mono);color:#98b5b3;letter-spacing:0;}
+.mission-metrics strong {font:700 19px var(--ops-number);color:#f4e9d1;}
+.decision-moment {border-radius:0;background:#203237;border-left:3px solid #75b8ad;padding:12px;}
+.decision-moment>small {font:600 11px var(--ops-mono);color:var(--ops-copper);}
+.decision-moment strong {font:700 13px var(--ops-sans);}
+.decision-moment p {font-size:12px;}
+.mission-feedback {background:#1f3539;border-left:3px solid var(--ops-copper);}
+.domino-end-summary {border-radius:0;border-left:3px solid #659a91;background:rgba(31,54,58,.75);}
+.patient-result {border-bottom:1px solid #466065;font:500 12px var(--ops-mono);}
+.round-outcome {border-radius:0;background:rgba(118,53,43,.21);border-color:#b6756a;color:#ffd0b9;}
+.round-outcome.passed {background:rgba(48,96,77,.26);border-color:#72bb98;color:#c5ead2;}
+.triage-end-panel button {border-radius:0;background:var(--ops-copper);color:#17242a;
+  font:700 13px var(--ops-mono);padding:13px 15px;transition:filter .12s;}
+.triage-end-panel button:hover {filter:brightness(1.1);}
+.round-end-actions #next-round {background:#a5ddc5;color:#152c29;}
+
+@media(max-height:800px) and (min-width:1051px){
+  .triage-mission-hud{bottom:110px;max-height:none;}
+  .controls-help{height:88px;}
+  .stt-monitor-panel{max-height:calc(100vh - 315px);overflow:auto;scrollbar-width:thin;}
+}
+@media(max-width:1320px){
+  .mission-head{width:min(480px,calc(100vw - 260px));}
+  .triage-mission-hud{width:305px;max-width:305px;}
+  .controls-help{width:305px;max-width:305px;}
+  .triage-radio,.stt-monitor-panel{right:16px;width:330px;max-width:330px;}
+  .triage-action-prompt{max-width:calc(100vw - 675px);}
+}
+@media(max-width:1050px){
+  .mission-head{left:10px;top:10px;width:min(425px,calc(100vw - 190px));height:62px;}
+  .mission-head .mission-mark{height:60px;width:48px;flex-basis:48px;font-size:41px;}
+  .mission-head b{font-size:25px;}
+  .mission-head .status-dot{font-size:8px;}
+  .score{right:10px;top:10px;width:160px;min-width:160px;height:62px;}
+  .score strong{font-size:41px;}
+  .triage-mission-hud{left:10px;top:83px;bottom:109px;width:285px;max-width:285px;}
+  .triage-radio{right:10px;top:83px;width:285px;max-width:285px;height:175px;}
+  .stt-monitor-panel{right:10px;top:270px;width:285px;max-width:285px;max-height:calc(100vh - 288px);overflow:auto;}
+  .controls-help{left:10px;bottom:10px;width:285px;max-width:285px;height:87px;}
+  .controls-help .control-grid>span{font-size:8px;}
+  .triage-action-prompt{left:50%;bottom:10px;width:min(370px,calc(100vw - 610px));max-width:none;font-size:11px;}
+}
+@media(max-width:750px){
+  .mission-head{width:calc(100vw - 130px);height:57px;gap:7px;}
+  .mission-head .mission-mark{height:55px;width:42px;flex-basis:42px;font-size:36px;}
+  .mission-head b{font-size:23px;}
+  .mission-head small{font-size:7px;margin-top:4px;}
+  .mission-head .mission-brand-divider,.mission-head .status-dot{display:none;}
+  .score{width:107px;min-width:107px;height:57px;padding:8px;}
+  .score .score-kicker{font-size:7px;}
+  .score strong{font-size:34px;}
+  .score .score-annotation{display:none;}
+  .triage-mission-hud{left:10px;top:77px;bottom:auto;height:auto;max-height:44vh;width:min(270px,calc(52vw - 12px));}
+  .mission-time{font-size:52px;}
+  .triage-radio{right:10px;top:77px;bottom:auto;width:min(270px,calc(48vw - 12px));height:137px;}
+  .signal-entry{font-size:10px;grid-template-columns:39px 1fr;padding:5px 8px;gap:5px;}
+  .signal-feed-head b{font-size:9px;}
+  .stt-monitor-panel{right:10px;top:226px;bottom:auto;width:min(270px,calc(48vw - 12px));max-height:43vh;overflow:auto;}
+  .stt-panel-head strong{font-size:22px;}
+  .stt-slot{padding:6px;gap:6px;grid-template-columns:49px 1fr;}
+  .controls-help{left:10px;bottom:10px;width:min(330px,calc(100vw - 20px));height:85px;}
+  .triage-action-prompt{display:none;}
+  .triage-modal-content,.triage-end-panel{padding:20px 18px;}
+  .triage-modal-content h2,.triage-end-panel h1{font-size:39px;}
+}
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{transition-duration:0s!important;animation-duration:0s!important;}
+}

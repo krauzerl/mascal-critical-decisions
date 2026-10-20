@@ -1,0 +1,132 @@
+/*
+ * MASCAL / FIELD COMMAND — mission launch and 20-second briefing
+ * Native HTML/CSS; zero added dependencies. Does not change gameplay HUD.
+ */
+.mascal-launch[hidden],.mascal-launch [hidden] { display:none !important; }
+.mascal-launch {position:fixed;inset:0;z-index:300;display:flex;align-items:center;justify-content:center;
+  padding:clamp(12px,3vw,38px);font-family:var(--ops-sans,'IBM Plex Sans',sans-serif);color:#f1eee3;overflow:auto;}
+.launch-shade {position:fixed;inset:0;z-index:-1;pointer-events:none;
+  background:radial-gradient(ellipse at 54% 31%,rgba(22,43,48,.6) 0%,rgba(4,12,17,.86) 60%,rgba(3,10,15,.96) 100%);
+  -webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px);}
+.launch-console {position:relative;width:min(1130px,100%);max-height:min(760px,calc(100dvh - 34px));display:flex;flex-direction:column;
+  background:linear-gradient(114deg,rgba(15,28,34,.985) 0%,rgba(11,23,29,.99) 63%,rgba(13,33,37,.985) 100%);
+  border:1px solid rgba(141,175,173,.36);border-top:3px solid #ef915b;
+  box-shadow:0 36px 110px #000b,0 0 0 1px #060f15 inset;overflow:hidden;}
+.launch-console::before {content:"";position:absolute;right:-35px;top:51px;width:400px;height:400px;opacity:.08;pointer-events:none;
+  background:repeating-linear-gradient(137deg,transparent 0,transparent 22px,#9ebdb9 23px,#9ebdb9 24px);mask-image:linear-gradient(90deg,transparent,#000);}
+.launch-rail {height:57px;min-height:57px;padding:0 26px;display:flex;align-items:center;justify-content:space-between;gap:16px;
+  background:rgba(51,76,79,.21);border-bottom:1px solid rgba(145,176,178,.23);font:600 11px var(--ops-mono,monospace);letter-spacing:.07em;}
+.launch-rail-left,.launch-rail-right {display:flex;align-items:center;gap:13px;min-width:0;}
+.launch-rail-left b {color:#eb8b5c;font-weight:500;}
+.launch-insignia {width:31px;height:31px;display:flex;align-items:center;justify-content:center;background:#ee915f;color:#0a1a21;
+  font:900 24px/.9 var(--ops-number,sans-serif);letter-spacing:-.1em;}
+.launch-insignia span {font-size:22px;align-self:flex-end;margin-bottom:7px;}
+.launch-rail-right {color:#a9d6c9;font-size:9px;white-space:nowrap;}
+.launch-pulse {width:7px;height:7px;border-radius:50%;background:#a4d6bf;box-shadow:0 0 12px #7ee1ba99;}
+.launch-version {margin-left:8px;padding-left:13px;border-left:1px solid #426066;color:#7c9b9d;}
+.launch-columns {display:grid;grid-template-columns:minmax(0,1.08fr) minmax(355px,.92fr);min-height:0;overflow-y:auto;}
+.launch-main {display:flex;flex-direction:column;justify-content:center;min-width:0;padding:45px clamp(30px,4vw,61px) 42px;border-right:1px solid rgba(145,176,178,.2);}
+.launch-eyebrow {color:#e9a27c;font:700 10px var(--ops-mono,monospace);letter-spacing:.13em;}
+.launch-index {color:#11262a;background:#ef945f;padding:6px 7px;margin-right:7px;letter-spacing:.03em;}
+.launch-main h1 {margin:27px 0 13px;color:#f5f2e7;font:900 clamp(59px,6vw,91px)/.86 var(--ops-number,'Arial Narrow',sans-serif);
+  letter-spacing:.018em;text-transform:uppercase;}
+.launch-main h1>span {display:block;margin-top:12px;font-size:clamp(45px,4.75vw,71px);color:#e4a479;line-height:.88;}
+.launch-title-dot {color:#f4eeea;}
+.launch-pitch {max-width:460px;font-size:clamp(13px,1.05vw,15px);line-height:1.72;color:#bfcfca;margin:10px 0 23px;}
+.launch-facts {display:grid;grid-template-columns:repeat(3,minmax(0,1fr));margin:2px 0 27px;border:1px solid rgba(143,175,176,.28);}
+.launch-facts div {display:flex;flex-direction:column;gap:7px;padding:12px 14px;min-width:0;}
+.launch-facts div+div {border-left:1px solid rgba(143,175,176,.26);}
+.launch-facts small {font:600 9px var(--ops-mono,monospace);color:#90a8a8;white-space:nowrap;letter-spacing:.03em;}
+.launch-facts strong {font:800 27px/.98 var(--ops-number,sans-serif);letter-spacing:.03em;color:#f6edd8;}
+.launch-cta-row {display:flex;flex-wrap:wrap;gap:10px;align-items:stretch;}
+.launch-cta-row button {border-radius:0;cursor:pointer;transition:filter .15s,background .15s;}
+.launch-play {display:flex;align-items:center;gap:14px;flex:1;min-width:245px;height:59px;padding:0 18px;
+  background:#ed9460;border:1px solid #ffb287;color:#112029;text-align:left;font:800 16px var(--ops-number,sans-serif);letter-spacing:.055em;}
+.launch-play:hover {background:#ffc09a;filter:brightness(1.03);}
+.launch-arrow {font:800 17px var(--ops-number,sans-serif);}
+.launch-shortcut {margin-left:auto;font:700 9px var(--ops-mono,monospace);color:#405058;border:1px solid rgba(34,56,60,.34);padding:5px;}
+.launch-manual {display:flex;align-items:center;justify-content:center;gap:10px;padding:0 16px;min-height:59px;
+  border:1px solid #66817d;background:rgba(29,52,55,.4);color:#cfdfda;font:700 11px var(--ops-mono,monospace);}
+.launch-manual:hover {background:#29464a;}
+.launch-manual span {font-size:17px;color:#f0a373;}
+.launch-footer-note {margin-top:17px;color:#92b1ae;font:500 10px/1.5 var(--ops-mono,monospace);}
+.launch-dot {display:inline-block;width:6px;height:6px;background:#83c9b4;border-radius:50%;margin-right:7px;}
+.launch-brief {min-width:0;padding:38px clamp(24px,3vw,40px) 26px;}
+.launch-brief-head {display:flex;justify-content:space-between;align-items:center;gap:12px;border-bottom:1px solid #445e60;
+  padding-bottom:16px;margin-bottom:5px;font:700 10px var(--ops-mono,monospace);color:#d9e6dd;letter-spacing:.055em;}
+.launch-brief-head b {font-size:9px;font-weight:600;color:#e59b70;white-space:nowrap;}
+.launch-step {display:grid;grid-template-columns:36px minmax(0,1fr);gap:15px;align-items:start;padding:21px 0;border-bottom:1px solid #344d51;}
+.launch-step-number {color:#ec9361;font:900 32px/.8 var(--ops-number,sans-serif);}
+.launch-step strong {font:800 21px/.98 var(--ops-number,sans-serif);color:#eee9dd;letter-spacing:.04em;}
+.launch-step p {font:400 12px/1.58 var(--ops-sans,sans-serif);color:#aec2be;margin:8px 0 0;}
+.launch-step kbd,.launch-guide-item kbd {border-radius:1px;min-width:24px;height:auto;min-height:22px;vertical-align:middle;display:inline-flex;
+  background:#2b4346;border-color:#587876;color:#f3f0e8;font-size:10px;box-shadow:none;}
+.launch-step kbd {margin:0 1px;}
+.launch-priority {display:flex;flex-wrap:wrap;gap:5px;margin-top:10px;}
+.launch-priority span {padding:6px 7px;border:1px solid rgba(173,195,189,.19);background:rgba(10,25,29,.4);
+  font:700 9px var(--ops-mono,monospace);white-space:nowrap;}
+.priority-green {color:#9ce2b3;}.priority-yellow {color:#f5d27a;}.priority-red {color:#ff9586;}.priority-black {color:#bcb8c0;}
+.launch-brief-foot {display:flex;align-items:baseline;gap:11px;margin-top:23px;color:#c6d6d0;font:500 12px/1.6 var(--ops-sans,sans-serif);}
+.launch-brief-foot span {font:800 12px var(--ops-mono,monospace);color:#ed9868;}
+.launch-guide {padding-top:10px;}
+.launch-guide-item {display:flex;gap:15px;align-items:center;border-bottom:1px solid #334b4e;padding:9px 0;color:#d2dfd9;font:500 12px/1.45 var(--ops-sans,sans-serif);}
+.launch-guide-item kbd {min-width:72px;justify-content:center;white-space:nowrap;padding:7px 6px;color:#ffddbc;}
+.launch-guide-tip {padding:10px 0;margin:9px 0;color:#b7d1c9;font:400 12px/1.6 var(--ops-sans,sans-serif);}
+.launch-guide-tip b {font:700 11px var(--ops-mono,monospace);color:#ef9664;margin-right:8px;}
+.launch-guide-tip.subdued {font-size:10px;color:#87a29f;border-top:1px solid #3e5959;}
+.launch-bottom {height:45px;min-height:45px;border-top:1px solid #375153;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:0 26px;
+  background:rgba(6,15,20,.4);color:#6f9292;font:600 9px var(--ops-mono,monospace);letter-spacing:.05em;}
+.mascal-launch[data-mode="pause"] .launch-index {background:#83cab5;}
+.mascal-launch[data-mode="pause"] .launch-play {background:#a1cfba;border-color:#bfefdc;}
+.mascal-launch[data-mode="pause"] .launch-play:hover {background:#c2e9d8;}
+.ops-help-button {display:inline-flex;gap:7px;align-items:center;padding:2px 4px;color:#a1d5c7;background:transparent;
+  border:0;font:700 9px var(--ops-mono,monospace);letter-spacing:.04em;cursor:pointer;}
+.ops-help-button:hover {color:#fff2d6;}
+.ops-help-button kbd {height:19px;min-width:19px;font-size:9px;}
+.mascal-launch-open .mission-head,.mascal-launch-open .score,
+.mascal-launch-open .triage-mission-hud,.mascal-launch-open .triage-radio,
+.mascal-launch-open .stt-monitor-panel,.mascal-launch-open .controls-help,
+.mascal-launch-open .triage-action-prompt {filter:blur(2px);}
+@media (max-height:760px) and (min-width:941px) {
+  .launch-main {padding-top:27px;padding-bottom:24px;}
+  .launch-main h1 {font-size:66px;margin:23px 0 10px;}
+  .launch-main h1>span {font-size:53px;}
+  .launch-brief {padding-top:23px;padding-bottom:18px;}
+  .launch-step {padding:14px 0;}
+  .launch-pitch {margin-bottom:14px;}
+  .launch-facts {margin-bottom:15px;}
+  .launch-brief-foot {margin-top:12px;}
+}
+@media (max-width:940px) {
+  .mascal-launch {align-items:flex-start;}
+  .launch-console {max-height:none;margin:auto 0;overflow:visible;}
+  .launch-columns {grid-template-columns:1fr;overflow:visible;}
+  .launch-main {padding:27px 28px 25px;border-right:0;border-bottom:1px solid #456063;}
+  .launch-main h1 {font-size:clamp(54px,9vw,77px);margin-top:19px;}
+  .launch-main h1>span {font-size:clamp(43px,7vw,62px);}
+  .launch-brief {padding:23px 28px 27px;}
+  .launch-step {padding:15px 0;}
+  .launch-brief-foot {margin-top:15px;}
+  .launch-bottom {height:auto;min-height:42px;}
+}
+@media (max-width:520px) {
+  .mascal-launch {padding:7px;}
+  .launch-rail {padding:0 15px;height:49px;min-height:49px;font-size:9px;}
+  .launch-rail-right {gap:5px;font-size:8px;}
+  .launch-version {display:none;}
+  .launch-main {padding:24px 19px 21px;}
+  .launch-brief {padding:19px 19px 24px;}
+  .launch-main h1 {font-size:56px;}
+  .launch-main h1>span {font-size:43px;}
+  .launch-pitch {font-size:12px;}
+  .launch-facts div {padding:10px 8px;}
+  .launch-facts small {font-size:8px;}
+  .launch-facts strong {font-size:22px;}
+  .launch-cta-row {flex-direction:column;}
+  .launch-play,.launch-manual {min-width:0;min-height:50px;height:50px;}
+  .launch-bottom span:nth-child(2) {display:none;}
+  .launch-bottom {padding:0 13px;}
+}
+@media (prefers-reduced-motion:reduce) {
+  .launch-play,.launch-manual {transition:none;}
+}
